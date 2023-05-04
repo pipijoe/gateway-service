@@ -1,0 +1,60 @@
+server:
+  port: 9090
+
+spring:
+  application:
+    name: gateway-service
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: 'http://localhost:9082/auth/rsa/publicKey'
+  redis:
+    host: localhost
+    port: 6381
+    password: 123456
+    timeout: 3000
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+        username: nacos
+        password: nacos
+    gateway:
+      discovery:
+        locator:
+          enabled: true # gateway ??? nacos ?????
+          lower-case-service-id: true #???????????
+      routes:
+        # ????
+        - id: oauth2-auth
+          uri: lb://oauth2-auth
+          predicates:
+            - Path=/oauth2/**
+          filters:
+            - StripPrefix=1
+        # ??????
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/us/**
+          filters:
+            - StripPrefix=1
+secure:
+  ignore:
+    urls: #??????????????token??????????????
+      - "/actuator/**"
+      - "/oauth2/oauth/token"
+      - "/oauth2/oauth/check_token"
+      - "/oauth2/logout"
+      - "/oauth2/oauth/authorize"
+      - "/oauth2/auth/rsa/publicKey"
+      - "/swagger-ui/**"
+      - "/swagger-resources/**"
+      - "/v3/api-docs/**"
+      - "/v2/api-docs/**"
+      - "/*/v3/api-docs"
+      - "/*/v2/api-docs"
+logging:
+  file:
+    path: logs
