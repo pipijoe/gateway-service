@@ -1,8 +1,8 @@
 package com.example.gatewayservice.auth;
 
 import cn.hutool.core.convert.Convert;
-import cn.les.gatewayservice.constant.AuthConstant;
-import cn.les.gatewayservice.constant.RedisConstant;
+import com.example.gatewayservice.constant.AuthConstant;
+import com.example.gatewayservice.constant.RedisConstant;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
